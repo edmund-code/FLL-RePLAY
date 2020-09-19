@@ -1,30 +1,37 @@
-## Briarcliff 6-Pack @ FLL RePLAY 2020-2021
+# Briarcliff 6-Pack @ FLL RePLAY 2020-2021
 
 You can use the [editor on GitHub](https://github.com/edmund-code/FLL-RePLAY/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
+## Robot Game
 
-### Markdown
+## Research
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Core Values
+### Discovery: We explore new skills and ideas.
+### Innovation: We use creativity and persistence to solve problems.
+### Impact:  We apply what we learn to improve our world.
+### Inclusion: We respect each other and embrace our differences.
+### Teamwork: We are stronger when we work together.
+### Fun: We enjoy and celebrate what we do!
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+# Python 
+[pybrick](https://pybricks.github.io/ev3-micropython/)
+```
+from pybricks.ev3devices import Motor, ColorSensor
+from pybricks.parameters import Port
+from pybricks.tools import wait
+from pybricks.robotics import DriveBase
 
-- Bulleted
-- List
+# Initialize the motors.
+left_motor = Motor(Port.B)
+right_motor = Motor(Port.C)
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+# Initialize the color sensor.
+line_sensor = ColorSensor(Port.S3)
 ```
 
+[Link](url) and ![Image](src)
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
 ### Jekyll Themes
