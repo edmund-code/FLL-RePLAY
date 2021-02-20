@@ -34,12 +34,31 @@ ev3.screen.set_font(Font(size=9))
 ev3.screen.print(robot.settings())
 print(robot.settings(), file=stderr)
 
-# Calculate the light threshold. Choose values based on your color sensor measurements.
+#robot.straight(getDistance(50))
+#robot.settings(straight_speed = 219, straight_acceleration = 876, turn_rate = 193, turn_acceleration = 773)
+
+#robot.stop()
+#wait(1000)
+
+robot.settings(straight_speed = 250, straight_acceleration = 100, turn_rate = 200, turn_acceleration = 200)
+
+
+# Calculate the light threshold. Choose values based on your measurements.
 BLACK = 7
 WHITE = 74
 threshold = 25.0
 
-#reset PID controller
+# Set the gain of the proportional line controller. This means that for every
+# percentage point of light deviating from the threshold, we set the turn
+# rate of the drivebase to 1.2 degrees per second.
+
+DRIVE_SPEED = -100
+
+# For example, if the light value deviates from the threshold by 10, the robot
+# steers at 10*1.2 = 12 degrees per second.
+PROPORTIONAL_GAIN = 200
+# Start following the line endlessly.
+
 err_p = 0.0
 err_i = 0.0
 err_d = 0.0
@@ -47,12 +66,11 @@ err_d = 0.0
 err_prev = 0.0
 i = 0
 
-# Start following the line endlessly.
 while True:
     i += 1
     err_prev = err_p
 
-   
+    # Calculate the deviation from the threshold.
     err_p = line_sensor.reflection() - threshold
     err_i += err_p
     err_d = err_p - err_prev
@@ -61,11 +79,11 @@ while True:
     ki = 0.02
     kd = 0.4
 
-
+    # Calculate the turn rate.
     turn_rate = kp * err_p + ki * err_i + kd * err_d
 
+    # Set the drive base speed and turn rate.
 
-#set drive speed based on turn rate
     if (abs(turn_rate) > 40):
         DRIVE_SPEED = -10
         wait(3)
@@ -84,5 +102,5 @@ while True:
         print("Time={}, turn rate={}, P={}, I={}, D={}".format(i, turn_rate, err_p, err_i, err_d))
     robot.drive(DRIVE_SPEED, turn_rate)
     
-
+    # You can wait for a short time or do other things in this loop.
   

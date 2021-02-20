@@ -6,7 +6,6 @@ from pybricks.parameters import Direction
 from pybricks.robotics import DriveBase
 import math
 import time
-import sys
 
 # Initialize the EV3 Brick.
 ev3 = EV3Brick()
@@ -69,8 +68,8 @@ def move_straight(speed, distance):
         robot.drive(-speed, turn_rate)
     drive_distance += robot.distance()
 
-target_distance = 450
-speed = 200
+target_distance = 200
+speed = 20
 
 robot.distance_control.stall_tolerances(speed, 100)
 robot.distance_control.limits(actuation = 40)
@@ -80,12 +79,17 @@ def check_stall(robot):
         print("STALLED")
         robot.stop()
         return True
-        
-move_straight(speed, target_distance)
-traveled_distance = abs(move_straight(speed, target_distance))
-if traveled_distance <= target_distance: #stalled
-    robot.stop()
-    small_motor_left.run_angle(-speed, 550, wait=True)
-    small_motor_left.hold()
 
-#small_motor_left.run_angle(200, 550, wait=True)
+move_straight(200, 600)
+move_straight(15, 250)
+move_straight(-200, 700)
+move_straight(200, 650)
+traveled_distance = abs(move_straight(40, target_distance))
+if traveled_distance <= target_distance: #stalled
+        small_motor_left.run_angle(200, -75, wait=True)
+for i in range(5):
+    if traveled_distance <= target_distance: #stalled
+        move_straight(-20, 25)
+        move_straight(20, target_distance - traveled_distance)
+small_motor_left.run_angle(200, 75, wait=True)
+move_straight(-200, 800)
