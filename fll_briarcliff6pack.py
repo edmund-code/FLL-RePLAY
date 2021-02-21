@@ -7,28 +7,32 @@ from pybricks.robotics import DriveBase
 import sys
 import time
 import math
-import fll_briarcliff6pack
 
-class b6pRobot:
+class Bri6Pack:
     def __init__(self):
         # Initialize the EV3 Brick.
         self.ev3 = EV3Brick()
 
-        left_motor = Motor(Port.A)
-        right_motor = Motor(Port.B)
+        # large motors
+        self.left_motor = Motor(Port.A)
+        self.right_motor = Motor(Port.B)
+
+        # small (medium) motors
         self.small_motor_left = Motor(Port.C, positive_direction=Direction.CLOCKWISE, gears=None)
         self.small_motor_right = Motor(Port.D, positive_direction=Direction.CLOCKWISE, gears=None)
+        
+        # gyro sensor
         self.gyro_sensor = GyroSensor(Port.S3, Direction.CLOCKWISE)
 
         # Initialize the drive base.
-        self.robot = DriveBase(left_motor, right_motor, wheel_diameter=93.5, axle_track=120)
+        self.drive_base = DriveBase(left_motor, right_motor, wheel_diameter=93.5, axle_track=120)
         return
     
     """
     A proportional–integral–derivative controller 
     """
     def Move_PID(speed, distance): 
-        robot = self.robot
+        drive_base = self.drive_base
         gyro_sensor = self.gyro_sensor
 
         # reset gyro sensor
@@ -41,7 +45,7 @@ class b6pRobot:
         err_prev = 0.0
         i = 0
 
-        while robot.distance() <= distance:
+        while drive_base.distance() <= distance:
                 i += 1
                 err_prev = err_p
 
@@ -58,7 +62,7 @@ class b6pRobot:
                     err_i *= math.exp(-abs(err_i))
 
                 turn_rate = kp * err_p + ki * err_i + kd * err_d
-                robot.drive(-speed, -turn_rate)
+                drive_base.drive(-speed, -turn_rate)
 
                 if (i % 20 == 0):
                     print("Time={}, turn rate={}, P={}, I={}, D={}".format(i, turn_rate, err_p, err_i, err_d))
