@@ -2,7 +2,8 @@
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor, GyroSensor
 from pybricks.parameters import Port
-from pybricks.parameters import Direction 
+from pybricks.parameters import Direction
+from pybricks.parameters import Stop
 from pybricks.robotics import DriveBase
 import sys
 import time
@@ -14,8 +15,8 @@ class Bri6Pack:
         self.ev3 = EV3Brick()
 
         # large motors
-        self.left_motor = Motor(Port.A)
-        self.right_motor = Motor(Port.B)
+        left_motor = Motor(Port.A, positive_direction=Direction.COUNTERCLOCKWISE, gears=None)
+        right_motor = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE, gears=None)
 
         # small (medium) motors
         self.small_motor_left = Motor(Port.C, positive_direction=Direction.CLOCKWISE, gears=None)
@@ -31,9 +32,20 @@ class Bri6Pack:
     """
     A proportional–integral–derivative controller 
     """
-    def Move_PID(speed, distance): 
+    def drive_pid(self, speed, distance): 
+        # speed is always positive
+        # postive distance ==> move forward
+        # negative distance ==> move backward
+        speed = abs(speed)
+        if (distance < 0):
+            speed = -speed
+            distance = -distance
+
         drive_base = self.drive_base
         gyro_sensor = self.gyro_sensor
+
+        # resets the estimated driven distance and angle to 0
+        drive_base.reset()
 
         # reset gyro sensor
         gyro_sensor.reset_angle(0)
@@ -45,25 +57,42 @@ class Bri6Pack:
         err_prev = 0.0
         i = 0
 
-        while drive_base.distance() <= distance:
-                i += 1
-                err_prev = err_p
+        while abs(drive_base.distance()) <= abs(distance):
+            i += 1
+            err_prev = err_p
 
-                err_p = 0 - gyro_sensor.angle()
-                err_i += err_p
-                err_d = err_p - err_prev
+            err_p = 0 - gyro_sensor.angle()
+            err_i += err_p
+            err_d = err_p - err_prev
 
-                kp = 4
-                ki = 0.02
-                kd = 2
+            kp = 1
+            ki = 0.002
+            kd = 10
 
-                # limit the speed err_i can grow (exponential decay)
-                if abs(err_i) >= 100:
-                    err_i *= math.exp(-abs(err_i))
+            # limit the speed err_i can grow (exponential decay)
+            if abs(err_i) >= 100:
+                err_i *= math.exp(-abs(err_i/100))
 
-                turn_rate = kp * err_p + ki * err_i + kd * err_d
-                drive_base.drive(-speed, -turn_rate)
+            turn_rate = kp * err_p + ki * err_i + kd * err_d
+            drive_base.drive(speed, turn_rate)
 
-                if (i % 20 == 0):
-                    print("Time={}, turn rate={}, P={}, I={}, D={}".format(i, turn_rate, err_p, err_i, err_d))
+            time.sleep(0.005)
+
+            if (i % 20 == 0):
+                print("Count={}, Distance={} turn rate={}, P={}, I={}, D={}".format(i, drive_base.distance(), turn_rate, err_p, err_i, err_d))
+
+        drive_base.stop()  
+        print("Count={}, Distance={} turn rate={}, P={}, I={}, D={}".format(i, drive_base.distance(), turn_rate, err_p, err_i, err_d))
         
+
+    ## stall_tolerances(speed, time)
+    ## If the controller cannot reach this "speed" 
+    ## for some "time" even with maximum "actuation", it is stalled.
+    # robot.distance_control.stall_tolerances(speed, 100)
+    # robot.distance_control.limits(actuation = 40)
+    
+    def check_stall(self):
+        if self.drive_base.distance_control.stalled():
+            print("STALLED")
+            self.drive_base.stop()
+            return True
