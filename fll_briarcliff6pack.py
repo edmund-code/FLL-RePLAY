@@ -32,11 +32,13 @@ class Bri6Pack:
     """
     A proportional–integral–derivative controller 
     """
-    def drive_pid(self, speed, distance): 
-        # speed is always positive
+    def drive_pid(self, speed, distance):
+        # the sign of the input speed is ignored
+        speed = abs(speed)
+
+        # direction is indicated by the sign of the input distance  
         # postive distance ==> move forward
         # negative distance ==> move backward
-        speed = abs(speed)
         if (distance < 0):
             speed = -speed
             distance = -distance
@@ -57,32 +59,46 @@ class Bri6Pack:
         err_prev = 0.0
         i = 0
 
-        while abs(drive_base.distance()) <= abs(distance):
-            i += 1
-            err_prev = err_p
+        factor = abs(speed / 300.0) 
+        deltaT = 0.1
 
-            err_p = 0 - gyro_sensor.angle()
-            err_i += err_p
-            err_d = err_p - err_prev
+        total_distance = abs(distance)
+        gyro_PID_distance = total_distance / 2.0
 
-            kp = 1
-            ki = 0.002
-            kd = 10
+        # use gyro_PID for the first half
+        while abs(drive_base.distance()) <= gyro_PID_distance
+            err_p = 0.0 - gyro_sensor.angle()
+            err_i += err_p * deltaT
+            err_d = (err_p - err_prev) / deltaT
+
+            kp = 1 * factor
+            ki = 1.5 * factor
+            kd = 0.01 * factor
 
             # limit the speed err_i can grow (exponential decay)
             if abs(err_i) >= 100:
                 err_i *= math.exp(-abs(err_i/100))
 
-            turn_rate = kp * err_p + ki * err_i + kd * err_d
+            turn_rate = kp * err_p + ki * err_i + kd * err_d 
+
             drive_base.drive(speed, turn_rate)
 
-            time.sleep(0.005)
+            time.sleep(deltaT)
 
-            if (i % 20 == 0):
-                print("Count={}, Distance={} turn rate={}, P={}, I={}, D={}".format(i, drive_base.distance(), turn_rate, err_p, err_i, err_d))
+            # debugging output 
+            if (i % 1 == 0):
+                print("Count={}, Distance={}, Angle={}, turn rate={}, P={}, I={}, D={}".format(i, drive_base.distance(), drive_base.angle(), turn_rate, err_p, err_i, err_d))
 
+            i += 1
+            err_prev = err_p
+
+        # finish the distance with motor_PID
+        motor_PID_distance = total_distance - abs(drive_base.distance())
         drive_base.stop()  
-        print("Count={}, Distance={} turn rate={}, P={}, I={}, D={}".format(i, drive_base.distance(), turn_rate, err_p, err_i, err_d))
+        drive_base.settings(straight_speed=speed)
+        drive_base.straight(motor_PID_distance)
+        
+        print("Final: Distance={} gyroAngle={}".format(drive_base.distance(), gyro_sensor.angle()))
         
 
     ## stall_tolerances(speed, time)

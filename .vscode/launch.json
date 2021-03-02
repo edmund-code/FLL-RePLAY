@@ -9,7 +9,8 @@
 			"type": "ev3devBrowser",
 			"request": "launch",
 			// "program": "/home/robot/${workspaceRootFolderName}/Benchpart2.py",
-			"program": "/home/robot/${workspaceRootFolderName}/Final_run.py",
+			// "program": "/home/robot/${workspaceRootFolderName}/Final_run.py",
+			"program": "/home/robot/${workspaceRootFolderName}/test.py",
 			"interactiveTerminal": false
 		}
 	]
