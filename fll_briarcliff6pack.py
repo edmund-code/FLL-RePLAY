@@ -65,15 +65,6 @@ class Bri6Pack:
         total_distance = abs(distance)
         gyro_PID_distance = total_distance / 2.0
 
-<<<<<<< HEAD
-            err_p = 0.0 - gyro_sensor.angle() * 1.0
-            err_i += err_p
-            err_d = err_p - err_prev
-
-            kp = 0.8
-            ki = 0.002
-            kd = 2
-=======
         # use gyro_PID for the first half
         while abs(drive_base.distance()) <= gyro_PID_distance
             err_p = 0.0 - gyro_sensor.angle()
@@ -83,7 +74,6 @@ class Bri6Pack:
             kp = 1 * factor
             ki = 1.5 * factor
             kd = 0.01 * factor
->>>>>>> ee3225cb2f68aed19b67490809ac5e5b7b4ea812
 
             # limit the speed err_i can grow (exponential decay)
             if abs(err_i) >= 100:
@@ -93,11 +83,7 @@ class Bri6Pack:
 
             drive_base.drive(speed, turn_rate)
 
-<<<<<<< HEAD
-            time.sleep(0.01)
-=======
             time.sleep(deltaT)
->>>>>>> ee3225cb2f68aed19b67490809ac5e5b7b4ea812
 
             # debugging output 
             if (i % 1 == 0):

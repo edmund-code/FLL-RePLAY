@@ -9,14 +9,9 @@
 			"type": "ev3devBrowser",
 			"request": "launch",
 			// "program": "/home/robot/${workspaceRootFolderName}/Benchpart2.py",
-<<<<<<< HEAD
 			// "program": "/home/robot/${workspaceRootFolderName}/final_run.py",
 			//"program": "/home/robot/${workspaceRootFolderName}/speak.py",
 			"program": "/home/robot/${workspaceRootFolderName}/new_missions.py",
-=======
-			// "program": "/home/robot/${workspaceRootFolderName}/Final_run.py",
-			"program": "/home/robot/${workspaceRootFolderName}/test.py",
->>>>>>> ee3225cb2f68aed19b67490809ac5e5b7b4ea812
 			"interactiveTerminal": false
 		}
 	]
