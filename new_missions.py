@@ -10,13 +10,13 @@ drive_base = my_robot.drive_base
 # You can only change the settings while the robot is stopped. 
 # This is either before you begin driving or after you call stop().
 
-run_m12 = True
-run_m13 = True
+run_m12 = False
+run_m13 = False
 
-my_robot.drive_pid(500, 1500)
-my_robot.drive_pid(250, 250)
-time.sleep(1)
-my_robot.drive_pid(70, -270)
+my_robot.drive_pid(200, 1000)
+#my_robot.drive_pid(250, 250)
+#time.sleep(1)
+#my_robot.drive_pid(70, -270)
 
 # M12 Row Machine
 if run_m12:

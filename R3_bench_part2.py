@@ -9,6 +9,6 @@ import time
 my_robot = fll_briarcliff6pack.Bri6Pack()
 drive_base = my_robot.drive_base
 
-robot.settings(straight_speed=200)
-robot.straight(-600)
-robot.straight(600)
+my_robot.drive_pid(speed=150, distance=600) 
+my_robot.drive_pid(speed=150, distance=-600) 
+
