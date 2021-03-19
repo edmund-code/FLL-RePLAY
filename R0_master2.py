@@ -4,15 +4,15 @@ my_robot = fll_briarcliff6pack.Bri6Pack()
 
 import R1_basketball
 my_robot.reset_motors()
-my_robot.count_down(24)
+my_robot.count_down(12)
 
 import R2_bench
 my_robot.reset_motors()
-my_robot.count_down(18)
+my_robot.count_down(12)
 
 import R4_slide
 my_robot.reset_motors()
-my_robot.count_down(28)
+my_robot.count_down(20)
 
 import R5_final_run
 my_robot.say("I will not fall")

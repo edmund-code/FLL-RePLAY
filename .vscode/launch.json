@@ -8,11 +8,11 @@
 			"name": "Download and Run",
 			"type": "ev3devBrowser",
 			"request": "launch",
-			// "program": "/home/robot/${workspaceRootFolderName}/Benchpart2.py",
-			//"program": "/home/robot/${workspaceRootFolderName}/final_run.py",
-			//"program": "/home/robot/${workspaceRootFolderName}/3. bench_part2.py",
+			//"program": "/home/robot/${workspaceRootFolderName}/R2_bench.py",
+			//"program": "/home/robot/${workspaceRootFolderName}/R5_final_run.py",
+			//"program": "/home/robot/${workspaceRootFolderName}/R1_basketball.py",
 			//"program": "/home/robot/${workspaceRootFolderName}/new_missions.py",
-			"program": "/home/robot/${workspaceRootFolderName}/R0_master.py",
+			"program": "/home/robot/${workspaceRootFolderName}/R0_master2.py",
 			"interactiveTerminal": false
 		}
 	]
