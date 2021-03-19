@@ -11,8 +11,6 @@ run_m02 = True
 run_m08 = True
 run_m06 = True
 
-#set up hugging the wall and on the second line back
-
 # M02 Step Counter
 if run_m02:
     my_robot.drive_pid(speed=380, distance=1250)
@@ -23,10 +21,9 @@ if run_m02:
     # This is either before you begin driving or after you call stop().
     drive_base.stop()
     drive_base.settings(straight_speed=100, turn_rate=100)
-    drive_base.straight(-70)
-    drive_base.turn(-130)
-    # drive_base.straight(25)
-    # drive_base.turn(-16)
+    drive_base.straight(-75)
+    drive_base.turn(-125)
+
     drive_base.straight(-150)    # move backward to align with the wall
     my_robot.drive_pid(speed=200, distance=785)   # go through the gate
     drive_base.stop()
@@ -38,12 +35,12 @@ if run_m08:
     drive_base.turn(37)
     drive_base.stop()
     drive_base.settings(straight_speed=100, turn_rate=100)
-    drive_base.straight(125)
+    drive_base.straight(175)
     drive_base.straight(-40)
     drive_base.stop()
     drive_base.settings(straight_speed=30, turn_rate=30)
     drive_base.turn(-50)
-    drive_base.straight(50)
+    drive_base.straight(100)
     my_robot.small_motor_left.run_angle(-50, -100)   # dump the cubes
     drive_base.stop()
 
